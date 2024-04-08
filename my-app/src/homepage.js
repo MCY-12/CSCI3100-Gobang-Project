@@ -1,6 +1,6 @@
 import React from 'react';
-import {Navbar, Nav, Container, Offcanvas, Button} from 'react-bootstrap';
-import {FilePerson} from 'react-bootstrap-icons';
+import {Navbar, Nav, Container, Offcanvas, Button, Col, Row, Image} from 'react-bootstrap';
+import {FilePerson, PersonFill, BookFill, Person} from 'react-bootstrap-icons';
 
 import { useState, useEffect } from 'react';
 
@@ -8,6 +8,8 @@ import { BrowserRouter, Routes, Route, Link, useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
+
+import './Homepage.css';
 
 function Homepage() {
     const [userInfo, setUserInfo] = useState(null);
@@ -29,30 +31,67 @@ function Homepage() {
         navigate('/login');
     };
 
-    const handleProfileShow = () => {
-        
-    }
+    const [showProfile, setShowProfile] = useState(false);
+    const handleProfileShow = () => setShowProfile(true);
+    const handleProfileClose = () => setShowProfile(false);
 
     return (
-        <div>
-            <Navbar data-bs-theme="light" bg="dark">
-                <Navbar.Brand className="ms-3" href='#'>GoGobang</Navbar.Brand>
+        <div className="Homepage">
+            <Navbar data-bs-theme="light" style={{backgroundColor: "lightskyblue"}}>
+                <Navbar.Brand className="ms-3 me-auto" style={{color: "white", fontWeight: 500}} href='#'>GoGobang</Navbar.Brand>
                 <Nav className="">
-                    <Button className="me-2" variant="outline-danger" onClick={handleLogout}>Logout</Button>
+                    <Button id="logoutButton" className="me-2" variant="outline-danger" onClick={handleLogout}>Logout</Button>
                 </Nav>
                 <Nav className="">
-                    <Button className="me-3" variant="outline-dark" onClick={handleProfileShow}>
+                    <Button className="me-3" variant="dark" onClick={handleProfileShow}>
                         <FilePerson size={24} />
                     </Button>
                 </Nav>
             </Navbar>
-        <Offcanvas>
 
-        </Offcanvas>
-        <Container fluid>
+            <Offcanvas show={showProfile} onHide={handleProfileClose} placement="end" style={{backgroundColor: "#f1f8fd", minWidth: "30rem"}}>
+                <Offcanvas.Header closeButton>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                    <Container>
+                        <Row className="my-2">
+                            <Col sm={3}>
+                                <Container style={{height: "100%", paddingLeft:0, paddingRight:"1.4rem"}}><PersonFill size={"3.8rem"} style={{backgroundColor: "lightskyblue", width: "105%"}}/></Container>
+                            </Col>
+                            <Col sm={9}>
+                                <h1 className="d-flex justify-content-flex-start align-items-center pb-1" style={{height: "100%"}} id="profileUsername" >testUser123</h1>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <h5 id="profileEloRating" className='me-auto' style={{marginTop: "0.5rem", fontWeight:450}}>Elo Rating: 1234</h5>
+                            </Col>
+                            <Col>
+                                <Button id="profileViewGameRecords" variant="info"><BookFill size={"1.2rem"}/> View Game Records</Button>
+                            </Col>
+                        </Row>
+                        <hr style={{
+                            height: 2,
+                            marginTop: "1.5rem",
+                            marginBottom: "1.5rem",
+                        }}/>
+                        <Row>
+                            <h1 className="fw-normal text-center">Friends</h1>
+                        </Row>
+                        <Container fluid>
+                            <Row>
+                                
+                            </Row>
+                        </Container>
+                    </Container>
+                </Offcanvas.Body>
+            </Offcanvas>
 
-        </Container>
-      </div>
+            <div className="d-flex justify-content-center align-items-center" style={{height: "85vh"}}>
+                <Button id="casualButton" variant="outline-info" className="fs-1">Casual</Button>
+                <Button id="rankedButton" variant="outline-info" className="fs-1">Ranked</Button>
+            </div>
+        </div>
     );
 }
 

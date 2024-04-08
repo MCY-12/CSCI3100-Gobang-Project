@@ -1,0 +1,30 @@
+#logoutButton {
+    background-color: white;
+}
+#logoutButton:hover {
+    background-color: #dc3545;
+}
+
+#casualButton, #rankedButton {
+    min-height: 5rem;
+    min-width: 15rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+
+    border-color: lightskyblue;
+    font-weight: 350;
+}
+#casualButton:hover, #rankedButton:hover {
+    border-color: lightskyblue;
+    background-color: lightskyblue;
+    font-weight: 400;
+    color: white;
+}
+
+#profileViewGameRecords {
+    height: 90%;
+    padding-bottom: 0.7rem;
+    border-color: lightskyblue;
+    background-color: lightskyblue;
+    font-weight: 500;
+}
