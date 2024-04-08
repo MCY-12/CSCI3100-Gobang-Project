@@ -2,6 +2,8 @@ import './App.css';
 import React from 'react';
 import { useState, useEffect } from 'react';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
 
 import {useNavigate, Navigate} from 'react-router-dom';
@@ -66,9 +68,11 @@ function App() {
             <Route path="/Homepage" element={<ProtectedRoute><Homepage/></ProtectedRoute>} />
             {/*
             <Route path="/casual_matchmaking" element={<ProtectedRoute><CasualMatchmaking/></ProtectedRoute>} />
+            
             <Route path="/ranked_matchmaking" element={<ProtectedRoute><RankedMatchmaking/></ProtectedRoute>} />
+            
             <Route path="/board_page" element={<ProtectedRoute><BoardPage/></ProtectedRoute>} />
-  */}
+            */}
             <Route path="/" element={<HomeRoute setIsLoggedIn={setIsLoggedIn} />} />
           </Routes>
         </BrowserRouter>
