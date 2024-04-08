@@ -7,10 +7,11 @@ import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
 import {useNavigate, Navigate} from 'react-router-dom';
 
 import Login from './login';
-import Homepage from './homepage';
+import Homepage from './Homepage';
 import CasualMatchmaking from './casual_matchmaking';
 import RankedMatchmaking from './ranked_matchmaking';
 import BoardPage from './board_page';
+
 
 function App() {
 
@@ -41,13 +42,13 @@ function App() {
     return children;
   };
 
-  function hRoute ({setIsLoggedIn}) {
+  function HomeRoute ({setIsLoggedIn}) {
     const navigate = useNavigate();
     const tokenExists = sessionStorage.getItem('token');
 
     useEffect(() => {
       if (tokenExists) {
-        navigate('/homepage');
+        navigate('/Homepage');
       }
     }, [navigate, tokenExists]);
 
@@ -60,18 +61,17 @@ function App() {
 
   return (
     <div className="App">
-      
-      <BrowserRouter>
-        <Routes>
-          <Route path="/homepage" element={<ProtectedRoute><Homepage/></ProtectedRoute>} />
-  {/*
-          <Route path="/casual_matchmaking" element={<ProtectedRoute><CasualMatchmaking/></ProtectedRoute>} />
-          <Route path="/ranked_matchmaking" element={<ProtectedRoute><RankedMatchmaking/></ProtectedRoute>} />
-          <Route path="/board_page" element={<ProtectedRoute><BoardPage/></ProtectedRoute>} />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/Homepage" element={<ProtectedRoute><Homepage/></ProtectedRoute>} />
+            {/*
+            <Route path="/casual_matchmaking" element={<ProtectedRoute><CasualMatchmaking/></ProtectedRoute>} />
+            <Route path="/ranked_matchmaking" element={<ProtectedRoute><RankedMatchmaking/></ProtectedRoute>} />
+            <Route path="/board_page" element={<ProtectedRoute><BoardPage/></ProtectedRoute>} />
   */}
-          <Route path="/" element={<hRoute setIsLoggedIn={setIsLoggedIn} />} />
-        </Routes>
-      </BrowserRouter>
+            <Route path="/" element={<HomeRoute setIsLoggedIn={setIsLoggedIn} />} />
+          </Routes>
+        </BrowserRouter>
 
     </div>
   );

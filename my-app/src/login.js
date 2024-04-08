@@ -25,7 +25,7 @@ const Login = ({ setIsLoggedIn }) => {
                 
                 setIsLoggedIn(true);
 
-                navigate('/homepage');
+                navigate('/Homepage');
             }
             else {
                 setError(true);
@@ -52,7 +52,7 @@ const Login = ({ setIsLoggedIn }) => {
     return (
         <div className="">
             <Container fluid>
-
+                <div>Hello</div>
             </Container>
         </div>
     );
