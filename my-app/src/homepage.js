@@ -1,5 +1,5 @@
 import React from 'react';
-import {Navbar, Nav, Container, Offcanvas, Button, Col, Row, Modal} from 'react-bootstrap';
+import {Navbar, Nav, Container, Offcanvas, Button, Col, Row, Modal, Collapse} from 'react-bootstrap';
 import {FilePerson, PersonFill, BookFill, PersonSquare, XCircleFill} from 'react-bootstrap-icons';
 
 import { useState, useEffect } from 'react';
@@ -54,6 +54,10 @@ function Homepage() {
     }
 
     const [openRecords1, setOpenRecords1] = useState(false);
+    function generateGameRecords() {
+
+    }
+
 
     //friend management code:
     const unFriend = () => {
@@ -163,9 +167,22 @@ function Homepage() {
                     <Modal.Title id="viewGameRecordsTitle">Game Records</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Button onClick={() => setOpenRecords1(!openRecords1)} variant="info">
-                        
-                    </Button>
+                    <Container fluid id="viewGameRecordsContainer">
+                        <Button className="d-flex justify-content-center mt-3" onClick={() => setOpenRecords1(!openRecords1)} variant="outline-info">
+                            <span style={{ whiteSpace: 'pre-line'}}>
+                                Elapsed Time: 7:39 - Black Wins
+                                {'\n'} 
+                                testUser123 (black) vs testUser321 (white)
+                            </span>
+                        </Button>
+                        <Collapse in={openRecords1}>
+                            <div>
+                                {/*   {(userInfo.gameRecords.game1.board)}   Take this line out of comments once backend for gamerecords is done*/}
+                                {/* not complete, will not function like this. Backend people needs to display this in a loop in a function and get it working*/}
+                            </div>
+                        </Collapse>
+                        {/*   {generateGameRecords(userInfo.gameRecords)}   Take this line out of comments once backend for gamerecords is done*/}
+                    </Container>
                 </Modal.Body>
                 <Modal.Footer>
                     
