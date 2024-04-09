@@ -1,0 +1,43 @@
+#casualSearchButton {
+    border-color: lightskyblue;
+    color: lightskyblue;
+    font-weight: 500;
+    font-size: 1.5rem;
+}
+#casualSearchButton:hover {
+    background-color: lightskyblue;
+    color: white;
+    font-weight: 500;
+    font-size: 1.5rem;
+}
+
+#casualInviteFriendButton {
+    border-color: lightskyblue;
+    color: lightskyblue;
+    font-weight: 500;
+    font-size: 1.5rem;
+    --bs-btn-active-bg: rgb(191, 225, 247);
+    --bs-btn-active-color: white !important;
+}
+#casualInviteFriendButton:hover {
+    background-color: lightskyblue;
+    color: white;
+    font-weight: 500;
+    font-size: 1.5rem;
+}
+#casualInviteFriendButton:active {
+    background-color: rgb(114, 159, 187);
+    color: white;
+    font-weight: 500;
+    font-size: 1.5rem;
+}
+
+
+#casualCancelButton {
+    font-weight: 500;
+    font-size: 1.5rem;
+}
+#casualCancelButton:hover {
+    font-weight: 500;
+    font-size: 1.5rem;
+}
