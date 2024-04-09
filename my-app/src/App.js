@@ -64,7 +64,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        {/*<Homepage/>*/} {/*<-- Put the name of the page you want to frontend test there.*/}
+        {<Homepage/>} {/*<-- Put the name of the page you want to frontend test there.*/}
         <Routes>
           <Route path="/Homepage" element={<ProtectedRoute><Homepage/></ProtectedRoute>} />
   {/* Only enable these after the pages are done, otherwise they will break the whole page
@@ -82,7 +82,3 @@ function App() {
 }
 
 export default App;
-
-/*
-
-*/

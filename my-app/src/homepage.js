@@ -1,6 +1,6 @@
 import React from 'react';
 import {Navbar, Nav, Container, Offcanvas, Button, Col, Row, Image} from 'react-bootstrap';
-import {FilePerson, PersonFill, BookFill, Person} from 'react-bootstrap-icons';
+import {FilePerson, PersonFill, BookFill, PersonSquare, XCircleFill} from 'react-bootstrap-icons';
 
 import { useState, useEffect } from 'react';
 
@@ -31,9 +31,42 @@ function Homepage() {
         navigate('/login');
     };
 
+    //constants for profile offcanvas
     const [showProfile, setShowProfile] = useState(false);
     const handleProfileShow = () => setShowProfile(true);
     const handleProfileClose = () => setShowProfile(false);
+
+    //friend management code:
+    const unFriend = () => {
+
+    };
+    //generate a list of friends to output
+    function generateFriendsList(friends) {
+        let output = '';
+        for(let i = 0; i < friends.length; i++) {
+            output += `
+                <Row className='mb-2'>
+                    <Col sm={2}>
+                        <PersonSquare size={48} style={{backgroundColor:"white"}}/>
+                    </Col>
+                    <Col sm={8}>
+                        <Container fluid>
+                            <h5 id="friendName" style={{marginTop: "0.1rem", marginBottom:0, fontWeight:500}}>${friends[i].name}</h5>
+                        </Container>
+                        <Container fluid>
+                            <h5 id="friendElo" style={{fontWeight:400}}>${friends[i].elo}</h5>
+                        </Container>
+                    </Col>
+                    <Col sm={2} className="d-flex align-items-center">
+                        <Container fluid>
+                            <XCircleFill size={24} onClick={() => unFriend(friends[i].id)} style={{marginBottom:"0.5rem"}}/>
+                        </Container>
+                    </Col>
+                </Row>
+            `;
+        }
+        return output;
+    }
 
     return (
         <div className="Homepage">
@@ -64,7 +97,7 @@ function Homepage() {
                         </Row>
                         <Row>
                             <Col>
-                                <h5 id="profileEloRating" className='me-auto' style={{marginTop: "0.5rem", fontWeight:450}}>Elo Rating: 1234</h5>
+                                <h5 id="profileEloRating" className='me-auto' style={{marginTop: "0.6rem", fontWeight:450}}>Elo Rating: 1234</h5>
                             </Col>
                             <Col>
                                 <Button id="profileViewGameRecords" variant="info"><BookFill size={"1.2rem"}/> View Game Records</Button>
@@ -72,16 +105,35 @@ function Homepage() {
                         </Row>
                         <hr style={{
                             height: 2,
-                            marginTop: "1.5rem",
-                            marginBottom: "1.5rem",
+                            marginTop: "1rem",
+                            marginBottom: "1rem",
                         }}/>
                         <Row>
-                            <h1 className="fw-normal text-center">Friends</h1>
+                            <h2 className="fw-normal text-center mb-3">Friends</h2>
                         </Row>
                         <Container fluid>
-                            <Row>
-                                
-                            </Row>
+                            {/* 
+                                Friends list module:
+                                <Row className='mb-2'>
+                                    <Col sm={2}>
+                                        <PersonSquare size={48} style={{backgroundColor:"white"}}/>
+                                    </Col>
+                                    <Col sm={8}>
+                                        <Container fluid>
+                                            <h5 id="friendName" style={{marginTop: "0.1rem", marginBottom:0, fontWeight:500}}>testUser321</h5>
+                                        </Container>
+                                        <Container fluid>
+                                            <h5 id="friendElo" style={{fontWeight:400}}>852</h5>
+                                        </Container>
+                                    </Col>
+                                    <Col sm={2} className="d-flex align-items-center">
+                                        <Container fluid>
+                                            <XCircleFill size={24} onClick={unFriend} style={{marginBottom:"0.5rem"}}/>
+                                        </Container>
+                                    </Col>
+                                </Row>
+                            */}
+                            {generateFriendsList(userInfo.friends)}
                         </Container>
                     </Container>
                 </Offcanvas.Body>
