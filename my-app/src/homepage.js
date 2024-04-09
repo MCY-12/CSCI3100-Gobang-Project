@@ -1,5 +1,5 @@
 import React from 'react';
-import {Navbar, Nav, Container, Offcanvas, Button, Col, Row, Image} from 'react-bootstrap';
+import {Navbar, Nav, Container, Offcanvas, Button, Col, Row, Modal} from 'react-bootstrap';
 import {FilePerson, PersonFill, BookFill, PersonSquare, XCircleFill} from 'react-bootstrap-icons';
 
 import { useState, useEffect } from 'react';
@@ -31,14 +31,33 @@ function Homepage() {
         navigate('/login');
     };
 
+    const goCasual = () => {
+        navigate('/casual_matchmaking');
+    };
+
+    const goRanked = () => {
+        navigate('/ranked_matchmaking');
+    };
+
     //constants for profile offcanvas
     const [showProfile, setShowProfile] = useState(false);
     const handleProfileShow = () => setShowProfile(true);
     const handleProfileClose = () => setShowProfile(false);
 
+    //constants for view game records modal
+    const [modalShow, setModalShow] = useState(false);
+    const [modalFullscreen, setModalFullscreen] = useState(true);
+    //handle modal from fullscreen to nonfullscreen
+    function handleModalShow(breakpoint) {
+        setModalFullscreen(breakpoint);
+        setModalShow(true);
+    }
+
+    const [openRecords1, setOpenRecords1] = useState(false);
+
     //friend management code:
     const unFriend = () => {
-
+        //backend people todo
     };
     //generate a list of friends to output
     function generateFriendsList(friends) {
@@ -100,7 +119,7 @@ function Homepage() {
                                 <h5 id="profileEloRating" className='me-auto' style={{marginTop: "0.6rem", fontWeight:450}}>Elo Rating: 1234</h5>
                             </Col>
                             <Col>
-                                <Button id="profileViewGameRecords" variant="info"><BookFill size={"1.2rem"}/> View Game Records</Button>
+                                <Button id="profileViewGameRecordsButton" variant="info" onClick={() => handleModalShow('lg-down')}><BookFill size={"1.2rem"}/> View Game Records</Button>
                             </Col>
                         </Row>
                         <hr style={{
@@ -133,15 +152,29 @@ function Homepage() {
                                     </Col>
                                 </Row>
                             */}
-                            {generateFriendsList(userInfo.friends)}
+                            {/*   {generateFriendsList(userInfo.friends)}   Take this line out of comments once backend for friends is done*/}
                         </Container>
                     </Container>
                 </Offcanvas.Body>
             </Offcanvas>
 
+            <Modal show={modalShow} fullscreen={modalFullscreen} onHide={() => setModalShow(false)} size="lg" centered>
+                <Modal.Header closeButton className="py-2">
+                    <Modal.Title id="viewGameRecordsTitle">Game Records</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Button onClick={() => setOpenRecords1(!openRecords1)} variant="info">
+                        
+                    </Button>
+                </Modal.Body>
+                <Modal.Footer>
+                    
+                </Modal.Footer>
+            </Modal>
+
             <div className="d-flex justify-content-center align-items-center" style={{height: "85vh"}}>
-                <Button id="casualButton" variant="outline-info" className="fs-1">Casual</Button>
-                <Button id="rankedButton" variant="outline-info" className="fs-1">Ranked</Button>
+                <Button id="casualButton" variant="outline-info" className="fs-1" onClick={goCasual}>Casual</Button>
+                <Button id="rankedButton" variant="outline-info" className="fs-1" onClick={goRanked}>Ranked</Button>
             </div>
         </div>
     );
