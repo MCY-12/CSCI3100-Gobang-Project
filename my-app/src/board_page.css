@@ -1,0 +1,78 @@
+body { display: flex; justify-content: center; align-items: center; } 
+canvas { background-color: #ddd; display: block; }
+.tools { display: flex; justify-content: center; } 
+.tools > button { 
+  margin: 0 1rem; 
+  border: none; 
+  background-color: #eee; 
+  padding: .5rem 1rem; 
+  font-size: 1rem; 
+  cursor: pointer; 
+  } 
+.tools > button:hover{
+  background-color: #aaa; 
+    }
+.container {
+   display: flex;
+   align-items: center;
+      }
+      
+.app {
+   position: relative;
+      }
+
+.info{
+   display: flex;
+      }
+      
+.user-timer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    text-align: center;
+      }
+      
+.username {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    }
+      
+.timer {
+    font-size: 20px;
+    background-color: #eee;
+    padding: 5px;
+    border-radius: 5px;
+    width: 80px;
+  }
+
+.turn-indicator {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 50px;
+  }
+
+.rightpart{
+    text-align: center;
+    padding-left: 20px;
+  }
+
+.clock{
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 50px;
+  }
+
+.scrollable-window {
+    height: 250px; 
+    overflow: auto;
+    border: solid;
+    background-color: lightgrey;
+}
+
+#moveHistory p{
+    line-height: 0.1; 
+}
+
