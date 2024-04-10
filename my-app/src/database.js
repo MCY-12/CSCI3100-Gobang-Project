@@ -19,17 +19,16 @@ db.once('open', function () {
 console.log("Connection is open...");
 
 const UserSchema = mongoose.Schema({
-  username: { type: String, required: true ,unique:false},
+  username: { type: String, required: true ,unique:true},
   password: { type: String, required: true},
   score:{type: Number},
   friends:[{type: mongoose.Schema.Types.ObjectId ,ref:'User'}],
   matches:[{type: mongoose.Schema.Types.ObjectId, ref:'Match'}],
-  state:{type: Boolean}
+  state:{type: String}
   });
 
 const MatchSchema =mongoose.Schema({
-  matchId:{type: Number, required: true, unique: true},
-  board: [{ type: String, required: true }],
+  board: [{ type: Array, required: true }],
   player1: { type: mongoose.Schema.Types.ObjectId ,ref:'User',required: true },
   player2: { type: mongoose.Schema.Types.ObjectId ,ref:'User',required: true },
   startingTime:{ type: String, required: true },
@@ -44,6 +43,50 @@ const bodyParser = require('body-parser');
 // Use parser to obtain the content in the body of a request
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+function newBoard(){
+  const arr = [];
+  const n = 19;
+  const m = 19;
+
+for (let i = 0; i < n; i++) {
+    arr.push(new Array(m).fill(0));
+}
+  return arr;
+}
+
+const updateBoard=async(matchId,player,x,y)=>{
+  
+}
+
+//done: return match document if found,else null
+const queueUser=async(user,action)=>{
+  if (action=='queue'){
+    const waiting=await User.findOne({state:"in queue"});
+    if (waiting){
+      const dateTime=Date();
+      var bd=newBoard();
+      const p2=await User.findOne({username:user});
+      const match=Match.create({
+        player1: waiting._id,
+        player2: p2._id,
+        startingTime:dateTime,
+        board:bd
+      });
+      await User.updateOne({_id:waiting._id},{$set:{state:""}});
+      return match;
+    }
+    else{
+    await User.updateOne({username:user},{$set:{state:"in queue"}});
+    return null;
+  }
+  }
+  else if (action=='dequeue'){
+    await User.updateOne({username:user},{$set:{state:""}});
+  }
+  return null;
+}
+
 
 
 function stringToHash(string) {
@@ -60,7 +103,7 @@ function stringToHash(string) {
 
   return hash;
 }
-
+module.exports={queueUser};
 
 //handle register
 app.post('/register', async function(req,res){
@@ -71,11 +114,13 @@ app.post('/register', async function(req,res){
     if (!userExist) {
       console.log("b");
       const pw = stringToHash(req.body.password);
+      const state="";
       console.log("pw = ", pw);
       const user =  User.create({
         username: req.body.username,
         password: pw,
-        score : 0
+        score : 0,
+        state: state
       });
       console.log("user = ", user);
       res.status(201).send('Successful user registration');
@@ -109,8 +154,8 @@ app.post('/login', async (req,res) => {
             SECRET_KEY,
             { expiresIn: '3h' }
           )
-          console.log("token :", token);
-          res.status(200).send({message:'Successful user login',token,user:user.username,});
+          let buf=res.status(200).send({message:'Successful user login, redirect after 3 seconds',token,user:user.username,});
+          console.log(buf.body);
         } else {
           console.log("b")
           res.status(400).json({ error: "Password doesn't match" });
@@ -124,6 +169,15 @@ app.post('/login', async (req,res) => {
     }
   })
  
+app.post('/test',(req,res)=>{
+  console.log(queueUser('abc','queue'));
+  res.send('done');
+})
+
+app.post('/test2',(req,res)=>{
+  console.log(queueUser('def','queue'));
+  res.send('done'); 
+})
 // handle ALL requests
 app.all('/*', (req, res) => {
   // send this to client
@@ -131,5 +185,8 @@ app.all('/*', (req, res) => {
 });
 })
 
+
 // listen to port 3000
 const server = app.listen(3000);
+
+

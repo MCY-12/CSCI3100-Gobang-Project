@@ -6,6 +6,8 @@ import {useState, useEffect} from 'react';
 
 import {useNavigate} from 'react-router-dom';
 
+import { queueUser } from "./database";
+
 import './casual_matchmaking.css';
 
 function CasualMatchmaking() { 
@@ -55,7 +57,15 @@ function CasualMatchmaking() {
 
     //handle what happens after match is found
     const [matchFound, setMatchFound] = useState(false);
-        //backend people insert matchmaking logic function here (probably using useEffect)
+        
+    
+    
+    
+    
+    
+    
+    
+    //backend people insert matchmaking logic function here (probably using useEffect)
         //MAKE IT SO THAT ONCE A MATCH IS FOUND isSearching IS SET TO FALSE AND matchFound IS SET TO TRUE
         //setMatchFound(true);
         //setIsSearching(false);

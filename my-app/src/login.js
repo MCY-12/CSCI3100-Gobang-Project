@@ -16,38 +16,43 @@ const Login = ({ setIsLoggedIn }) => {
 
     const navigate = useNavigate();
 
-    const handleLogin = (username, password) => {
-        axios.post('http://localhost:3001/login', {username, password}).then(response => {
-        setMessage(response.data.message);
-            
+    const handleLogin = async () => {
+        await axios.post('http://localhost:3000/login', { username, password }).then(response=>{
             if (response.data.token) {
                 sessionStorage.setItem('token', response.data.token);
                 sessionStorage.setItem('userInfo', JSON.stringify(response.data.user));
                 
-                setIsLoggedIn(true);
-
-                navigate('/Homepage');
+                const successMsg=JSON.stringify(response.data.message);
+            
+                setError(false);
+            
+                setMessage(successMsg);
+                
+                setTimeout(()=>{
+                    setIsLoggedIn(true);
+                    navigate('/Homepage');},
+                    3000);
             }
-            else {
-                setError(true);
-            }
+            
         })
-        .catch(error => {
-            setError(true);
-
-            const errorMessage = error.response?.data?.message || error.message;
-            setMessage("Error during login: " + errorMessage);
-        });
+        .catch (err=>{
+        setError(true);
+        const errMsg=JSON.stringify(err.response.data);
+        setMessage("Error during login: " + errMsg);})
+    
     };
 
     const handleRegister = async () => {
-        try {
-            const response = await axios.post('http://localhost:3001/register', { username, password });
-            setMessage(response.data.message);
-        } catch (err) {
+            await axios.post('http://localhost:3000/register', { username, password }).then(response=>{
+                const successMsg=JSON.stringify(response.data);
+                setError(false);
+                setMessage(successMsg);
+            })
+            .catch (err=>{
             setError(true);
-            setMessage("Error during registration: " + err.response?.data?.message || err.message);
-        }
+            const errMsg=JSON.stringify(err.response.data);
+            setMessage("Error during registration: " + errMsg);})
+        
     };
 
     return (
@@ -106,7 +111,7 @@ const Login = ({ setIsLoggedIn }) => {
                         <Button className="mx-1 mb-2" variant="outline-info" onClick={handleRegister}>
                             <ArrowUpLeft/> Register
                         </Button>
-                        <Button className="mx-1 mb-2" variant="outline-info" type="submit" onClick={() => handleLogin(username, password)}>
+                        <Button className="mx-1 mb-2" variant="outline-info" onClick={handleLogin}>
                             Login <ArrowRight/>
                         </Button>
                     </Form>
