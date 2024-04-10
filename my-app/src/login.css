@@ -1,0 +1,19 @@
+#registerButton {
+    border-color: lightskyblue;
+    color: lightskyblue;
+}
+#registerButton:hover {
+    border-color: lightskyblue;
+    background-color: lightskyblue;
+    color: white;
+}
+
+#loginButton {
+    border-color: lightskyblue;
+    color: lightskyblue;
+}
+#loginButton:hover {
+    border-color: lightskyblue;
+    background-color: lightskyblue;
+    color: white;
+}
