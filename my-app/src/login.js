@@ -7,6 +7,8 @@ import { ArrowRight, ArrowUpLeft } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+import './login.css';
+
 const Login = ({ setIsLoggedIn }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -82,7 +84,7 @@ const Login = ({ setIsLoggedIn }) => {
                         marginBottom: 15
                     }}>Login/Register</h1>
                 </Row>
-                <Row className='text-center justify-content-center' md={4}>
+                <Row className='text-center justify-content-center'>
                     <Form>
                         
                         {/* Username input */}
@@ -108,10 +110,10 @@ const Login = ({ setIsLoggedIn }) => {
                         </Form.Group>
                         
                         <p></p>
-                        <Button className="mx-1 mb-2" variant="outline-info" onClick={handleRegister}>
+                        <Button id="registerButton" className="mx-1 mb-2" variant="outline-info" onClick={handleRegister}>
                             <ArrowUpLeft/> Register
                         </Button>
-                        <Button className="mx-1 mb-2" variant="outline-info" onClick={handleLogin}>
+                        <Button id="loginButton" className="mx-1 mb-2" variant="outline-info" onClick={handleLogin}>
                             Login <ArrowRight/>
                         </Button>
                     </Form>

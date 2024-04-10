@@ -64,16 +64,16 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        {/*<CasualMatchmaking/>*/} {/*<-- Put the name of the page you want to frontend test there.*/}
+        {/*<BoardPage/>*/} {/*<-- Put the name of the page you want to frontend test there.*/}
         <Routes>
           <Route path="/Homepage" element={<ProtectedRoute><Homepage/></ProtectedRoute>} />
   
           <Route path="/casual_matchmaking" element={<ProtectedRoute><CasualMatchmaking/></ProtectedRoute>} />
   {/* Only enable these after the pages are done, otherwise they will break the whole page
           <Route path="/ranked_matchmaking" element={<ProtectedRoute><RankedMatchmaking/></ProtectedRoute>} />
-          
+  */}        
           <Route path="/board_page" element={<ProtectedRoute><BoardPage/></ProtectedRoute>} />
-  */}
+
           <Route path="/" element={<HomeRoute setIsLoggedIn={setIsLoggedIn} />} />
         </Routes>
       </BrowserRouter>
