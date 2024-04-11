@@ -36,7 +36,8 @@ function App() {
     const token = sessionStorage.getItem('token');
     const userInfo = sessionStorage.getItem('userInfo');
 
-    if (!token || !userInfo) {
+   // if (!token || !userInfo) {
+    if (false) {
         // User not authenticated; redirect to login page
         return <Navigate to="/login" />;
     }

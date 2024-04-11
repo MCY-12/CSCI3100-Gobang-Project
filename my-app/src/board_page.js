@@ -28,14 +28,14 @@ function updateCount1(){
         gobangGame.win = true
         document.getElementById("Move").textContent = "Player 2 wins";
         stop1();
-        stop();
+        //stop();
     }
     else if(time2 === 0){
         gobangGame.gobang.onclick = null
         gobangGame.win = true
         document.getElementById("Move").textContent = "Player 1 wins";
         stop2();
-        stop();
+        //stop();
     }
 }
 function updateCount2(){
@@ -49,14 +49,14 @@ function updateCount2(){
         gobangGame.win = true
         document.getElementById("Move").textContent = "Player 2 wins";
         stop1();
-        stop();
+        //stop();
     }
     else if(time2 === 0){
         gobangGame.gobang.onclick = null
         gobangGame.win = true
         document.getElementById("Move").textContent = "Player 1 wins";
         stop2();
-        stop();
+        //stop();
     }
 }
 
@@ -74,6 +74,7 @@ function start2(){
 }
 const clockDisplay = document.getElementById("clock");
 const startTime = Date.now();
+
 function update(){
     const currentTime = Date.now();
     let elapsedTime = currentTime-startTime;
@@ -83,10 +84,11 @@ function update(){
     sec = String(sec).padStart(2, "0");
     clockDisplay.textContent = `${min}:${sec}`;
 }
+let clock = setInterval(update, 1000);
 function stop(){
     clearInterval(clock);
 }
-let clock = setInterval(update, 1000);
+
 
             
         class Gobang { 
@@ -187,7 +189,7 @@ let clock = setInterval(update, 1000);
                         const newParagraph = document.createElement("p");
                         newParagraph.textContent = Object.is(this.role, 1) ? `Black: ${x} , ${y}`: `White: ${x} , ${y}`;
                         myDiv.appendChild(newParagraph);
-    
+                        this.history = []
                         this.history.length = this.currentStep
                         this.history.push({ 
                             x, y, 
@@ -247,8 +249,8 @@ let clock = setInterval(update, 1000);
                     this.win = true
                     stop1();
                     stop2();
-                    stop();
-                    document.getElementById("Move").textContent = role == 1? "Player 1 wins" : "PLayer 2 wins";
+                    //stop();
+                    document.getElementById("Move").textContent = role == 1? "Player 1 wins" : "Player 2 wins";
                 }
             }
 
@@ -318,32 +320,32 @@ let clock = setInterval(update, 1000);
 
 
         return (
- <div class="container">
-    <div class="app">
+ <div className="container">
+    <div className="app">
       <canvas id="game" width="600px" height="600px"></canvas>
       <br/>
-      <div class="tools">
-        <button onclick="gobangGame.regretChess()">Retract</button>
-        <button onclick="gobangGame.revokedRegretChess()">Undo</button>
+      <div className="tools">
+        <button onClick={() => gobangGame.regretChess()}>Retract</button>
+        <button onClick={() => gobangGame.revokedRegretChess()}>Undo</button>
       </div>
     </div>
 
-    <div class="rightpart">
-      <div class="turn-indicator" id="Move">Black to Move</div>
-      <div class="clock" id="clock">00:00</div>
+    <div className="rightpart">
+      <div className="turn-indicator" id="Move">Black to Move</div>
+      <div className="clock" id="clock">00:00</div>
 
-      <div class="info">
-        <div class="user-timer">
-          <div class="username">Player 1</div>
-          <div class="timer" id="timer1">10:00</div>
+      <div className="info">
+        <div className="user-timer">
+          <div className="username">Player 1</div>
+          <div className="timer" id="timer1">10:00</div>
         </div>
-        <div class="user-timer">
-          <div class="username">Player 2</div>
-          <div class="timer" id="timer2">10:00</div>
+        <div className="user-timer">
+          <div className="username">Player 2</div>
+          <div className="timer" id="timer2">10:00</div>
         </div>
       </div>
       <button>Move</button>
-      <div class="scrollable-window" id="moveHistory">
+      <div className="scrollable-window" id="moveHistory">
       </div>
     </div>
 
