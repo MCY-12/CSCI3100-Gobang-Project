@@ -159,12 +159,6 @@ function Homepage() {
                             marginTop: "1rem",
                             marginBottom: "1rem",
                         }}/>
-                        <Row>
-                            <h2 className="fw-normal text-center mb-3">Friends</h2>
-                        </Row>
-                        <Container fluid>
-                            {/*   {generateFriendsList(userInfo.friends)}   Take this line out of comments once backend for friends is done*/}
-                        </Container>
                     </Container>
                 </Offcanvas.Body>
             </Offcanvas>
