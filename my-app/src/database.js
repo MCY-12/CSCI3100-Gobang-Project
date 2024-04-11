@@ -206,10 +206,10 @@ app.post('/searching',async function(req,res){
       result=val;
       console.log(result);
       console.log(val);    
-    });      
+    }).then(()=>{
     if (result){
     res.json({matched:"yes"});}
-    else res.json({matched:"no"});
+    else res.json({matched:"no"});})   
   }
  catch (error) {
   res.status(400).json({ error });

@@ -33,7 +33,12 @@ function CasualMatchmaking() {
         if (isSearching) {
             interval = setInterval(() => {
                 setElapsedTime(prevTime => prevTime + 1);
-                axios.post('http://localhost:3000/searching',{id:matchId})
+                axios.post('http://localhost:3000/searching',{id:matchId}).then(response=>{
+                    if(response.data.matched=="yes")
+                        setMatchFound(true);
+                        setIsSearching(false);
+                })
+
             }, 1000);
         }
         return () => clearInterval(interval);
