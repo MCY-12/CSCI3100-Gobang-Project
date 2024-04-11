@@ -36,11 +36,10 @@ function App() {
     const token = sessionStorage.getItem('token');
     const userInfo = sessionStorage.getItem('userInfo');
 
-   // if (!token || !userInfo) {
-    if (false) {
-        // User not authenticated; redirect to login page
-        return <Navigate to="/login" />;
-    }
+    if (!token || !userInfo) {
+      // User not authenticated; redirect to login page
+      return <Navigate to="/" />;
+  }
 
     return children;
   };
@@ -70,9 +69,7 @@ function App() {
           <Route path="/Homepage" element={<ProtectedRoute><Homepage/></ProtectedRoute>} />
   
           <Route path="/casual_matchmaking" element={<ProtectedRoute><CasualMatchmaking/></ProtectedRoute>} />
-  {/* Only enable these after the pages are done, otherwise they will break the whole page
-          <Route path="/ranked_matchmaking" element={<ProtectedRoute><RankedMatchmaking/></ProtectedRoute>} />
-  */}        
+  
           <Route path="/board_page" element={<ProtectedRoute><BoardPage/></ProtectedRoute>} />
 
           <Route path="/" element={<HomeRoute setIsLoggedIn={setIsLoggedIn} />} />
@@ -85,5 +82,5 @@ function App() {
 export default App;
 
 /*
-
+  
 */

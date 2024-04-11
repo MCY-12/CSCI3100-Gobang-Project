@@ -25,7 +25,7 @@ const UserSchema = mongoose.Schema({
   friends:[{type: mongoose.Schema.Types.ObjectId ,ref:'User'}],
   matches:[{type: mongoose.Schema.Types.ObjectId, ref:'Match'}],
   state:{type: String}
-  });
+});
 
 const MatchSchema =mongoose.Schema({
   board: [{ type: Array, required: true }],
@@ -185,6 +185,18 @@ app.all('/*', (req, res) => {
 });
 })
 
+app.get('/user/matches', (req, res) => {
+  const username = req.query.username; // get the username from the request query parameters
+  User.findOne({ username: username })
+    .populate('matches')
+    .exec((err, user) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.json(user.matches);
+      }
+    });
+});
 
 // listen to port 3000
 const server = app.listen(3000);

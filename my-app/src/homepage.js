@@ -20,6 +20,8 @@ function Homepage() {
             setUserInfo(JSON.parse(storedUserInfo));
         }
     }, []);
+
+    //console.log("userInfo: " + userInfo);
     
     const navigate = useNavigate();
     
@@ -28,7 +30,7 @@ function Homepage() {
         setIsLoggedIn(false);
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('userInfo');
-        navigate('/login');
+        navigate('/');
     };
 
     const goCasual = () => {
@@ -53,11 +55,26 @@ function Homepage() {
         setModalShow(true);
     }
 
-    const [openRecords1, setOpenRecords1] = useState(false);
-    function generateGameRecords() {
+    const [openRecords, setOpenRecords] = useState(false);
+    const [matchRecords, setMatchRecords] = useState([]);
+    useEffect(() => {
+        if (userInfo) {
+            const username = userInfo;
+            ffetch(`/user/matches?username=${userInfo.username}`)
+            .then(response => response.json())
+            .then(matches => {
+                setMatchRecords(matches);
+                setOpenRecords(matches.map(() => false));
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    })
 
-    }
-
+    const toggleOpen = index => {
+        const newOpenRecords = [...openRecords];
+        newOpenRecords[index] = !newOpenRecords[index];
+        setOpenRecords(newOpenRecords);
+    };
 
     //friend management code:
     const unFriend = () => {
@@ -109,13 +126,13 @@ function Homepage() {
                 <Offcanvas.Header closeButton>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
-                    <Container>
+                    <Container fluid>
                         <Row className="my-2">
                             <Col sm={3}>
                                 <Container style={{height: "100%", paddingLeft:0, paddingRight:"1.4rem"}}><PersonFill size={"3.8rem"} style={{backgroundColor: "lightskyblue", width: "105%"}}/></Container>
                             </Col>
                             <Col sm={9}>
-                                <h1 className="d-flex justify-content-flex-start align-items-center pb-1" style={{height: "100%"}} id="profileUsername" >testUser123</h1>
+                                <h1 className="d-flex justify-content-flex-start align-items-center pb-1" style={{height: "100%"}} id="profileUsername" >{userInfo}</h1>
                             </Col>
                         </Row>
                         <Row>
@@ -135,27 +152,6 @@ function Homepage() {
                             <h2 className="fw-normal text-center mb-3">Friends</h2>
                         </Row>
                         <Container fluid>
-                            {/* 
-                                Friends list module:
-                                <Row className='mb-2'>
-                                    <Col sm={2}>
-                                        <PersonSquare size={48} style={{backgroundColor:"white"}}/>
-                                    </Col>
-                                    <Col sm={8}>
-                                        <Container fluid>
-                                            <h5 id="friendName" style={{marginTop: "0.1rem", marginBottom:0, fontWeight:500}}>testUser321</h5>
-                                        </Container>
-                                        <Container fluid>
-                                            <h5 id="friendElo" style={{fontWeight:400}}>852</h5>
-                                        </Container>
-                                    </Col>
-                                    <Col sm={2} className="d-flex align-items-center">
-                                        <Container fluid>
-                                            <XCircleFill size={24} onClick={unFriend} style={{marginBottom:"0.5rem"}}/>
-                                        </Container>
-                                    </Col>
-                                </Row>
-                            */}
                             {/*   {generateFriendsList(userInfo.friends)}   Take this line out of comments once backend for friends is done*/}
                         </Container>
                     </Container>
@@ -168,20 +164,29 @@ function Homepage() {
                 </Modal.Header>
                 <Modal.Body>
                     <Container fluid id="viewGameRecordsContainer">
-                        <Button className="d-flex justify-content-center mt-3" onClick={() => setOpenRecords1(!openRecords1)} variant="outline-info">
-                            <span style={{ whiteSpace: 'pre-line'}}>
-                                Elapsed Time: 7:39 - Black Wins
-                                {'\n'} 
-                                testUser123 (black) vs testUser321 (white)
-                            </span>
-                        </Button>
-                        <Collapse in={openRecords1}>
-                            <div>
-                                {/*   {(userInfo.gameRecords.game1.board)}   Take this line out of comments once backend for gamerecords is done*/}
-                                {/* not complete, will not function like this. Backend people needs to display this in a loop in a function and get it working*/}
+                        {matchRecords.map((match, index) => (
+                            <div key={index}>
+                                <Button className="d-flex justify-content-center mt-3" onClick={() => toggleOpen(index)} variant="outline-info">
+                                    <span style={{ whiteSpace: 'pre-line'}}>
+                                        Starting Time: {match.startingTime} - {match.result}
+                                        {'\n'} 
+                                        {match.player1.username} vs {match.player2.username}
+                                    </span>
+                                </Button>
+                                <Collapse in={openRecords[index]}>
+                                    <div>
+                                        Final Game State:
+                                        {match.board.map((row, rowIndex) => (
+                                            <div key={rowIndex}>
+                                            {row.map((cell, cellIndex) => (
+                                                <span key={cellIndex}>{cell}</span>
+                                            ))}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </Collapse>
                             </div>
-                        </Collapse>
-                        {/*   {generateGameRecords(userInfo.gameRecords)}   Take this line out of comments once backend for gamerecords is done*/}
+                        ))}
                     </Container>
                 </Modal.Body>
                 <Modal.Footer>

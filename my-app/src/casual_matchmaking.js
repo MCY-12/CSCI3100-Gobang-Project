@@ -72,7 +72,7 @@ function CasualMatchmaking() {
                             <PersonCircle className="mb-2" size={"3.3rem"}/>
                         </Row>
                         <Row>
-                            <h5 className="fw-light">testUser123</h5>
+                            <h5 className="fw-light">{userInfo && userInfo.username}</h5>
                         </Row>
                     </Col>
                     <Col sm={2} className="d-flex align-items-center justify-content-center fs-1 fw-bold pb-2">
