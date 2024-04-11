@@ -198,6 +198,19 @@ app.get('/user/matches', (req, res) => {
     });
 });
 
+app.get('/user/score', (req, res) => {
+  const username = req.query.username; // get the username from the request query parameters
+  User.findOne({ username: username }, (err, user) => {
+    if (err) {
+      res.status(500).send(err);
+    } else if (user) {
+      res.json(user.score);
+    } else {
+      res.status(404).send('User not found');
+    }
+  });
+});
+
 // listen to port 3000
 const server = app.listen(3000);
 

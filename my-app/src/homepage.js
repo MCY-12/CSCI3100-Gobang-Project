@@ -46,6 +46,17 @@ function Homepage() {
     const handleProfileShow = () => setShowProfile(true);
     const handleProfileClose = () => setShowProfile(false);
 
+    const [userScore, setUserScore] = useState(null);
+
+    useEffect(() => {
+        fetch(`/user/score?username=${userInfo.username}`)
+        .then(response => response.json())
+        .then(score => {
+            setUserScore(score);
+        })
+        .catch(error => console.error('Error:', error));
+    }, []);
+
     //constants for view game records modal
     const [modalShow, setModalShow] = useState(false);
     const [modalFullscreen, setModalFullscreen] = useState(true);
@@ -60,7 +71,7 @@ function Homepage() {
     useEffect(() => {
         if (userInfo) {
             const username = userInfo;
-            ffetch(`/user/matches?username=${userInfo.username}`)
+            fetch(`/user/matches?username=${userInfo.username}`)
             .then(response => response.json())
             .then(matches => {
                 setMatchRecords(matches);
@@ -137,7 +148,7 @@ function Homepage() {
                         </Row>
                         <Row>
                             <Col>
-                                <h5 id="profileEloRating" className='me-auto' style={{marginTop: "0.6rem", fontWeight:450}}>Elo Rating: 1234</h5>
+                                <h5 id="profileEloRating" className='me-auto' style={{marginTop: "0.6rem", fontWeight:450}}>Elo Rating: {userScore}</h5>
                             </Col>
                             <Col>
                                 <Button id="profileViewGameRecordsButton" variant="info" onClick={() => handleModalShow('lg-down')}><BookFill size={"1.2rem"}/> View Game Records</Button>
