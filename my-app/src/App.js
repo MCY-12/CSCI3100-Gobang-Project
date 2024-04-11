@@ -11,7 +11,6 @@ import {useNavigate, Navigate} from 'react-router-dom';
 import Login from './login';
 import Homepage from './homepage';
 import CasualMatchmaking from './casual_matchmaking';
-import RankedMatchmaking from './ranked_matchmaking';
 import BoardPage from './board_page';
 
 

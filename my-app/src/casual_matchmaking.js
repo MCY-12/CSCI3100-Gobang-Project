@@ -63,8 +63,9 @@ function CasualMatchmaking() {
         //also remember to remove all the test user names and link to back-end
 
     return (
-        <div className="CasualMatchmaking d-flex justify-content-center align-items-center" style={{height: "100vh"}}>
-            <Container fluid>
+        <div>
+        <Container fluid className="CasualMatchmaking d-flex justify-content-center align-items-center" style={{height: "100vh", width:"100%"}}>
+            <Container fluid >
                 <Row>
                     <Col sm={2}></Col>
                     <Col sm={3}>
@@ -132,6 +133,7 @@ function CasualMatchmaking() {
                     <p>Friend 3</p>
                 </Modal.Body>
             </Modal>
+        </Container>
         </div>
     );
 }

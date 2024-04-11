@@ -49,12 +49,15 @@ function Homepage() {
     const [userScore, setUserScore] = useState(null);
 
     useEffect(() => {
-        fetch(`/user/score?username=${userInfo.username}`)
-        .then(response => response.json())
-        .then(score => {
-            setUserScore(score);
-        })
-        .catch(error => console.error('Error:', error));
+        if (userInfo) {
+            const username = userInfo;
+            fetch(`/user/score?username=${userInfo.username}`)
+            .then(response => response.json())
+            .then(score => {
+                setUserScore(score);
+            })
+            .catch(error => console.error('Error:', error));
+        }
     }, []);
 
     //constants for view game records modal
