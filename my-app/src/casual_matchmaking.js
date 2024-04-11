@@ -6,9 +6,13 @@ import {useState, useEffect} from 'react';
 
 import {useNavigate} from 'react-router-dom';
 
+import axios from 'axios';
+
 import './casual_matchmaking.css';
 
-function CasualMatchmaking() { 
+
+function CasualMatchmaking() {
+    
     const [userInfo, setUserInfo] = useState(null);
     useEffect(() => {
         let storedUserInfo = sessionStorage.getItem('userInfo');
@@ -23,11 +27,13 @@ function CasualMatchmaking() {
     //constants for timer control
     const [isSearching, setIsSearching] = useState(false);
     const [elapsedTime, setElapsedTime] = useState(0);
+    const [matchId,setMatchId] =useState(null);
     useEffect(() => {
         let interval;
         if (isSearching) {
             interval = setInterval(() => {
                 setElapsedTime(prevTime => prevTime + 1);
+                axios.post('http://localhost:3000/searching',{id:matchId})
             }, 1000);
         }
         return () => clearInterval(interval);
@@ -38,8 +44,13 @@ function CasualMatchmaking() {
         return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
 
+
     //handle the search button being clicked.
     const handleSearchClick = () => {
+        axios.post('http://localhost:3000/casual_matchmaking', { username:userInfo ,action:'queue'}).then(response=>{
+            setMatchId(response.data.matchId);
+        })
+        .catch (err=>{})
         setIsSearching(true);
     };
     const handleCancelClick = () => {
@@ -63,9 +74,8 @@ function CasualMatchmaking() {
         //also remember to remove all the test user names and link to back-end
 
     return (
-        <div>
-        <Container fluid className="CasualMatchmaking d-flex justify-content-center align-items-center" style={{height: "100vh", width:"100%"}}>
-            <Container fluid >
+        <div className="CasualMatchmaking d-flex justify-content-center align-items-center" style={{height: "100vh"}}>
+            <Container fluid>
                 <Row>
                     <Col sm={2}></Col>
                     <Col sm={3}>
@@ -73,7 +83,7 @@ function CasualMatchmaking() {
                             <PersonCircle className="mb-2" size={"3.3rem"}/>
                         </Row>
                         <Row>
-                            <h5 className="fw-light">{userInfo && userInfo.username}</h5>
+                            <h5 className="fw-light">testUser123</h5>
                         </Row>
                     </Col>
                     <Col sm={2} className="d-flex align-items-center justify-content-center fs-1 fw-bold pb-2">
@@ -133,7 +143,6 @@ function CasualMatchmaking() {
                     <p>Friend 3</p>
                 </Modal.Body>
             </Modal>
-        </Container>
         </div>
     );
 }

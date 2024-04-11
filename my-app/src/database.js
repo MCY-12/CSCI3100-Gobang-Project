@@ -24,14 +24,14 @@ const UserSchema = mongoose.Schema({
   score:{type: Number},
   friends:[{type: mongoose.Schema.Types.ObjectId ,ref:'User'}],
   matches:[{type: mongoose.Schema.Types.ObjectId, ref:'Match'}],
-  state:{type: String}
-});
+  currentMatch:{type: mongoose.Schema.Types.ObjectId,ref:'Match'}
+  });
 
 const MatchSchema =mongoose.Schema({
-  board: [{ type: Array, required: true }],
+  board: { type: Array},
   player1: { type: mongoose.Schema.Types.ObjectId ,ref:'User',required: true },
-  player2: { type: mongoose.Schema.Types.ObjectId ,ref:'User',required: true },
-  startingTime:{ type: String, required: true },
+  player2: { type: mongoose.Schema.Types.ObjectId ,ref:'User' },
+  startingTime:{ type: String},
   result: { type: String }
 });
 
@@ -55,34 +55,47 @@ for (let i = 0; i < n; i++) {
   return arr;
 }
 
-const updateBoard=async(matchId,player,x,y)=>{
-  
+const matchingDone=async(matchId)=>{
+  const match=await Match.findOne({_id:matchId});
+  console.log(match.player1);
+  if (match.player1){
+    if(match.player2){
+      console.log('t');
+      return true;
+    }
+  }
+  return false;
 }
 
 //done: return match document if found,else null
 const queueUser=async(user,action)=>{
   if (action=='queue'){
-    const waiting=await User.findOne({state:"in queue"});
+    console.log(user);
+    const waiting=await User.findOne({currentMatch:{$ne:null}});
     if (waiting){
+      console.log('waiting');
+      const roomKey=waiting.currentMatch;
+      console.log(roomKey);
       const dateTime=Date();
       var bd=newBoard();
       const p2=await User.findOne({username:user});
-      const match=Match.create({
-        player1: waiting._id,
-        player2: p2._id,
-        startingTime:dateTime,
-        board:bd
-      });
-      await User.updateOne({_id:waiting._id},{$set:{state:""}});
-      return match;
+      await Match.updateOne({_id:roomKey},{$set:{player2:p2._id}});
+      await Match.updateOne({_id:roomKey},{$set:{startingTime:dateTime}});
+      await Match.updateOne({_id:roomKey},{$set:{board:bd}});
+      await User.updateOne({_id:p2._id},{$set:{currentMatch:roomKey}});
+      return roomKey;
     }
     else{
-    await User.updateOne({username:user},{$set:{state:"in queue"}});
-    return null;
+      const p1= await User.findOne({username:user});
+      const match= await Match.create({
+        player1: p1._id,
+      });
+    await User.updateOne({username:user},{$set:{currentMatch:match._id}});
+    return match._id;
   }
   }
   else if (action=='dequeue'){
-    await User.updateOne({username:user},{$set:{state:""}});
+    await User.updateOne({username:user},{$set:{currentMatch:null}});
   }
   return null;
 }
@@ -103,7 +116,7 @@ function stringToHash(string) {
 
   return hash;
 }
-module.exports={queueUser};
+
 
 //handle register
 app.post('/register', async function(req,res){
@@ -120,7 +133,6 @@ app.post('/register', async function(req,res){
         username: req.body.username,
         password: pw,
         score : 0,
-        state: state
       });
       console.log("user = ", user);
       res.status(201).send('Successful user registration');
@@ -168,16 +180,43 @@ app.post('/login', async (req,res) => {
       res.status(400).json({ error });
     }
   })
- 
-app.post('/test',(req,res)=>{
-  console.log(queueUser('abc','queue'));
-  res.send('done');
+
+
+app.post('/casual_matchmaking', async function(req,res){
+  try {
+      queueUser(req.body.username,req.body.action);
+      const Id=await User.findOne({username:req.body.username});
+      if(Id.currentMatch)
+      {res.status(201).json({matchId:Id.currentMatch});}
+      else{
+      res.status(201).send("dequeued");}
+      
+    }
+    
+   catch (error) {
+    console.log("d");
+    res.status(400).json({ error });
+  }
+});
+
+app.post('/searching',async function(req,res){
+  try {
+    let result;
+    matchingDone(req.body.id).then((val)=>{
+      result=val;
+      console.log(result);
+      console.log(val);    
+    });      
+    if (result){
+    res.json({matched:"yes"});}
+    else res.json({matched:"no"});
+  }
+ catch (error) {
+  res.status(400).json({ error });
+}
 })
 
-app.post('/test2',(req,res)=>{
-  console.log(queueUser('def','queue'));
-  res.send('done'); 
-})
+
 // handle ALL requests
 app.all('/*', (req, res) => {
   // send this to client
@@ -185,33 +224,7 @@ app.all('/*', (req, res) => {
 });
 })
 
-app.get('/user/matches', (req, res) => {
-  const username = req.query.username; // get the username from the request query parameters
-  User.findOne({ username: username })
-    .populate('matches')
-    .exec((err, user) => {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.json(user.matches);
-      }
-    });
-});
-
-app.get('/user/score', (req, res) => {
-  const username = req.query.username; // get the username from the request query parameters
-  User.findOne({ username: username }, (err, user) => {
-    if (err) {
-      res.status(500).send(err);
-    } else if (user) {
-      res.json(user.score);
-    } else {
-      res.status(404).send('User not found');
-    }
-  });
-});
 
 // listen to port 3000
 const server = app.listen(3000);
-
 
